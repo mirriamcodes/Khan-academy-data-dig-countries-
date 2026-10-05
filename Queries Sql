@@ -1,0 +1,37 @@
+-- Project: Data Dig - Khan Academy
+-- Dataset: Top Countries by Population
+-- Author: MIRRIAM NKHOMA...
+
+-- 1. Basic exploration - Order by population
+SELECT * FROM countries ORDER BY population ASC;
+
+-- 2. Average, Max, Min, Sum - What are average, max, min values in the data?
+SELECT AVG(population) AS average_population FROM countries;
+SELECT SUM(population) AS total_population FROM countries;
+SELECT MIN(population) AS minimum_population FROM countries;
+SELECT MAX(population) AS maximum_population FROM countries;
+
+-- 3. Grouping with HAVING - What about those numbers per category?
+SELECT fertility_rate, SUM(population) AS total_population 
+FROM countries 
+GROUP BY fertility_rate 
+HAVING total_population > 100000000;
+
+-- 4. Filtering with AND / OR - Interesting ways to filter
+SELECT * FROM countries 
+WHERE net_migrants > 1000 AND population_change < 2000;
+
+SELECT * FROM countries 
+WHERE density_per_sq_km > 300 OR median_age > 80;
+
+-- 5. Bonus: Grouping values that don't exist yet using CASE
+SELECT 
+    CASE 
+        WHEN median_age < 25 THEN 'Young Population'
+        WHEN median_age BETWEEN 25 AND 40 THEN 'Middle-aged Population'
+        ELSE 'Old Population'
+    END as age_group,
+    COUNT(*) as number_of_countries,
+    AVG(population) as avg_population
+FROM countries
+GROUP BY age_group;
